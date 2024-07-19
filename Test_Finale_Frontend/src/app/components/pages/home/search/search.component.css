@@ -1,0 +1,13 @@
+mat-card {
+    cursor:pointer;
+    margin:1vmax;
+}
+.results{
+    background-color: rgba(255,255,255,0.7);
+    padding: 1vmax;
+}
+form {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-around;
+}

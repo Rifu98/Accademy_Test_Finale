@@ -3,7 +3,6 @@ package com.federicorifugiato.controllers;
 import com.federicorifugiato.dtos.MeteoRegistrationDTO;
 import com.federicorifugiato.jwt.JWTTokenNeeded;
 import com.federicorifugiato.jwt.Secured;
-import com.federicorifugiato.models.Meteo;
 import com.federicorifugiato.services.MeteoService;
 
 import jakarta.validation.Valid;
