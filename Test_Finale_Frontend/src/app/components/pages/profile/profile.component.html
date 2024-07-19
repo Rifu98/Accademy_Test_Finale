@@ -8,4 +8,13 @@
       <button mat-flat-button color="warn" (click)=" logout()">Logout</button>
     </div>
   </div>
+  <div class="results" *ngFor="let ricerca of utente.ricercheMeteo">
+    <h3>Previsioni Meteo per {{ ricerca.citta }} il {{ ricerca.data }}</h3>
+    <p>Temperatura Massima: {{ ricerca.tempmax }}°C</p>
+    <p>Temperatura Minima: {{ ricerca.tempmin }}°C</p>
+    <button mat-fab extended >
+      <mat-icon>favorite</mat-icon>
+      Elimina
+    </button>
+  </div>
 </div>

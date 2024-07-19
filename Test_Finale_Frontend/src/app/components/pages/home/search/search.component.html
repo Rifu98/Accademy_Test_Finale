@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="main container text-center">
   <h2>Meteo</h2>
   <form (ngSubmit)="onSearch()">
     <mat-form-field class="full-width">
@@ -13,18 +13,19 @@
     </mat-form-field>
     <button mat-flat-button color="primary" type="submit" [disabled]="!selectedLocation">Cerca</button>
   </form>
-  <div class="row" *ngIf="locations.length > 0">
-    <mat-card mat-raised-button *ngFor="let loc of locations" (click)="onLocationSelect(loc)" >
-      <mat-card-content>
-        <p>{{loc.display_name}}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <mat-chip-set  *ngIf="locations.length > 0">
+    <mat-chip  *ngFor="let loc of locations" (click)="onLocationSelect(loc)" >
+      <span class="icon">
+        <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{{loc.countryCode}}.svg" />
+      </span>
+      {{loc.shortenedDisplayName}}
+    </mat-chip>
+  </mat-chip-set>
   <div class="results" *ngIf="weather">
-    <h3>Previsioni Meteo per {{ selectedLocation.display_name }} il {{ selectedDate | date }}</h3>
+    <h3>Previsioni Meteo per {{ selectedLocation.shortenedDisplayName }} il {{ selectedDate | date }}</h3>
     <p>Temperatura Massima: {{ weather.temperature_2m_max[0] }}°C</p>
     <p>Temperatura Minima: {{ weather.temperature_2m_min[0] }}°C</p>
-    <button mat-fab extended [disabled]="!isLogged">
+    <button mat-fab extended [disabled]="!isLogged" (click)="save()">
       <mat-icon>favorite</mat-icon>
       Salva
     </button>

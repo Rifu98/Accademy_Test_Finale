@@ -6,6 +6,7 @@ import { User } from '../../../dto/User';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatButtonModule,
     MatCardModule,
     MatIconModule,
-    RouterLink
+    RouterLink,
+    NgFor
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -27,6 +29,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.profiloService.getProfilo(this.storageService.getProperty('user_email'))?.subscribe((res: User) => {
       this.utente = res;
+      console.log(res)
     })
   }
   //subscribe(id: number) {
