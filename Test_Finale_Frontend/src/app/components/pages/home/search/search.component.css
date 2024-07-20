@@ -3,14 +3,16 @@ mat-card {
     margin:1vmax;
     display:inline !important;
 }
-.main{
-    background-color: rgba(255,255,255,0.9);
-    padding: 1vmax;
+.main {
+  background-color: rgba(255,255,255,0.9);
+  padding: 1vmax;
+  border-radius: 1vmax;
 }
 form {
     display:flex;
     flex-direction:row;
     justify-content:space-around;
+    flex-wrap:wrap
 }
 .icon img {
     height: 1vmax;

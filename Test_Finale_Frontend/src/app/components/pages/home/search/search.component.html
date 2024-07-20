@@ -1,9 +1,9 @@
 <div class="main container text-center">
   <h2>Meteo</h2>
-  <form (ngSubmit)="onSearch()">
-    <mat-form-field class="full-width">
+  <form (ngSubmit)="onSearch()" >
+    <mat-form-field class="full-width" (click)="openLocationDialog()" >
       <mat-label>Località</mat-label>
-      <input matInput (input)="onLocationInput($event)" [(ngModel)]="location" name="location">
+      <input matInput [value]="location" readonly>
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Data</mat-label>
@@ -13,16 +13,8 @@
     </mat-form-field>
     <button mat-flat-button color="primary" type="submit" [disabled]="!selectedLocation">Cerca</button>
   </form>
-  <mat-chip-set  *ngIf="locations.length > 0">
-    <mat-chip  *ngFor="let loc of locations" (click)="onLocationSelect(loc)" >
-      <span class="icon">
-        <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{{loc.countryCode}}.svg" />
-      </span>
-      {{loc.shortenedDisplayName}}
-    </mat-chip>
-  </mat-chip-set>
   <div class="results" *ngIf="weather">
-    <h3>Previsioni Meteo per {{ selectedLocation.shortenedDisplayName }} il {{ selectedDate | date }}</h3>
+    <h3>Previsioni Meteo per {{ selectedLocation?.shortenedDisplayName }} per {{ getFormattedDate(selectedDate) }}</h3>
     <p>Temperatura Massima: {{ weather.temperature_2m_max[0] }}°C</p>
     <p>Temperatura Minima: {{ weather.temperature_2m_min[0] }}°C</p>
     <button mat-fab extended [disabled]="!isLogged" (click)="save()">

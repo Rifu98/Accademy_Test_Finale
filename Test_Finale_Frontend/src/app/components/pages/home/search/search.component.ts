@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NominatimService } from '../../../../services/external/nominatim.service';
 import { OpenMeteoService } from '../../../../services/external/open-meteo.service';
 import { FormsModule } from '@angular/forms';
@@ -9,23 +10,19 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-
-import { NgFor, NgIf } from '@angular/common';
-import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/auth.service';
 import { Meteo } from '../../../../dto/Meteo';
 import { StorageService } from '../../../../services/storage.service';
 import { ProfileService } from '../../../../services/profile.service';
 import { User } from '../../../../dto/User';
 import { MeteoService } from '../../../../services/meteo.service';
+import { LocationDialogComponent } from '../location-dialog/location-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-search',
   standalone: true,
   imports: [
-    CommonModule,
-    NgIf,
-    NgFor,
     FormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -33,21 +30,19 @@ import { MeteoService } from '../../../../services/meteo.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    NgIf
   ],
-
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
   location: string = '';
-  locations: any[] = [];
   selectedLocation: any;
   selectedDate: Date = new Date();
   weather: any;
   isLogged: boolean = false;
-  meteo: Meteo = new Meteo('',new Date(),0,0,0);
-  private seenShortNames: Set<string> = new Set<string>();
+  meteo: Meteo = new Meteo('', new Date(), 0, 0, 0);
 
   constructor(
     private nominatimService: NominatimService,
@@ -55,76 +50,51 @@ export class SearchComponent implements OnInit {
     private authService: AuthService,
     private storageService: StorageService,
     private profiloService: ProfileService,
-    private meteoService: MeteoService, 
+    private meteoService: MeteoService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.authService.isAuthenticated().subscribe(isAuth => {
-      if (isAuth) {
-        this.isLogged=true;
-      } else {
-        this.isLogged = false;
-      }
+      this.isLogged = isAuth;
     });
-   }
-
-  onLocationInput(event: any) {
-    const query = event.target.value;
-    if (query.length > 0) {
-      this.nominatimService.search(query).subscribe((data: any[]) => {
-        this.locations = [];
-        this.seenShortNames.clear(); // Clear the set before adding new locations
-        for (let location of data) {
-          const shortName = this.shortenDisplayName(location.address);
-          if (!this.seenShortNames.has(shortName)) {
-            this.seenShortNames.add(shortName);
-            this.locations.push({
-              lat: location.lat,
-              lon: location.lon,
-              display_name: location.display_name,
-              address: location.address,
-              shortenedDisplayName: shortName,
-              countryCode: location.address.country_code.toUpperCase()
-            });
-          }
-        }
-      });
-    } else {
-      this.locations = [];
-    }
   }
 
-  onLocationSelect(location: any) {
-    this.selectedLocation = location;
-    this.location = location.display_name;
-    this.locations = [];
+  openLocationDialog() {
+    const dialogRef = this.dialog.open(LocationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedLocation = result;
+        this.location = result.display_name;
+      }
+    });
   }
 
   onSearch() {
     const date = this.selectedDate.toISOString().split('T')[0];
-    this.openMeteoService.getWeather(this.selectedLocation.lat, this.selectedLocation.lon, date)
-      .subscribe(data => {
-        this.weather = data.daily;
-      });
+    if (this.selectedLocation) {
+      this.openMeteoService.getWeather(this.selectedLocation.lat, this.selectedLocation.lon, date)
+        .subscribe(data => {
+          this.weather = data.daily;
+        });
+    }
   }
 
   save() {
-
     this.profiloService.getProfilo(this.storageService.getProperty('user_email'))?.subscribe((res: User) => {
-      this.meteo = new Meteo(this.selectedLocation.shortenedDisplayName, this.weather.time[0], this.weather.temperature_2m_max[0], this.weather.temperature_2m_min[0], res.id);
-      this.meteoService.save(this.meteo)!.subscribe(res => {
-        console.log(res)
-      })
-    })
+      this.meteo = new Meteo(this.selectedLocation.shortenedDisplayName, this.selectedDate, this.weather.temperature_2m_max[0], this.weather.temperature_2m_min[0], res.id);
+      this.meteoService.save(this.meteo)!.subscribe();
+    });
   }
 
-  shortenDisplayName(address: any): string {
-    const city = address.city || address.town || address.village || address.hamlet || '';
-    const county = address.county || address.state_district || '';
-    const state = address.state || '';
-    const country = address.country || '';
-    const mainPart = city || county;
-    const parts = [mainPart, state, country].filter(part => part !== '');
-    return parts.join(', ');
+  getFormattedDate(date: Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',   
+      day: '2-digit',    
+      month: 'long',      
+      year: 'numeric'     
+    };
+    return new Intl.DateTimeFormat('it-IT', options).format(date);
   }
 }

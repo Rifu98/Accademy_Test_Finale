@@ -5210,6 +5210,8 @@ export {
   coerceStringArray,
   ObserversModule,
   FocusKeyManager,
+  InteractivityChecker,
+  FocusTrapFactory,
   CdkTrapFocus,
   FocusMonitor,
   CdkMonitorFocus,
@@ -5262,4 +5264,4 @@ export {
   MatRippleLoader,
   _MatInternalFormField
 };
-//# sourceMappingURL=chunk-QOZMACDU.js.map
+//# sourceMappingURL=chunk-O72CRHOW.js.map

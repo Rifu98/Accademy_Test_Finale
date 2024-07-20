@@ -1,0 +1,19 @@
+<div class="dialog text-center">
+  <h1 mat-dialog-title>Seleziona una Località</h1>
+  <div mat-dialog-content class="chips">
+    <mat-form-field class="full-width">
+      <mat-label>Località</mat-label>
+      <input matInput (input)="onLocationInput($event)">
+    </mat-form-field>
+    <mat-chip-set *ngIf="locations.length > 0" class="set">
+      <div>
+        <mat-chip *ngFor="let loc of locations" (click)="onLocationSelect(loc)">
+          <span class="icon">
+            <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{{loc.countryCode}}.svg" />
+          </span>
+          {{loc.shortenedDisplayName}}
+        </mat-chip>
+      </div>
+    </mat-chip-set>
+  </div>
+</div>

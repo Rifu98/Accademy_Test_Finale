@@ -1,0 +1,14 @@
+
+.icon img {
+  height: 1vmax;
+}
+
+.dialog {
+    padding: 2vmax;
+    max-width:80vw;
+}
+.set {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+}
