@@ -23,6 +23,9 @@ public class Meteo {
     @Column(nullable = false)
     private double tempmin;
 
+    @Column(nullable = false)
+    private int weathercode;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -73,6 +76,14 @@ public class Meteo {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int getWeathercode() {
+		return weathercode;
+	}
+
+	public void setWeathercode(int weathercode) {
+		this.weathercode = weathercode;
 	}
       
 }

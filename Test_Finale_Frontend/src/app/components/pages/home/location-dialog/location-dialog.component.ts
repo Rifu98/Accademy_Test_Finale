@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
+import { UtilsService } from '../../../../services/utils.service';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class LocationDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<LocationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private nominatimService: NominatimService
+    private nominatimService: NominatimService,
+    public utilsService: UtilsService,
   ) { }
 
   onLocationInput(event: any) {
@@ -47,7 +49,7 @@ export class LocationDialogComponent {
           lon: location.lon,
           display_name: location.display_name,
           address: location.address,
-          shortenedDisplayName: this.shortenDisplayName(location.address),
+          shortenedDisplayName: this.utilsService.shortenDisplayName(location.address),
           countryCode: location.address.country_code.toUpperCase()
         }));
       });
@@ -59,15 +61,5 @@ export class LocationDialogComponent {
   onLocationSelect(location: any) {
     this.selectedLocation = location;
     this.dialogRef.close(this.selectedLocation);
-  }
-
-  shortenDisplayName(address: any): string {
-    const city = address.city || address.town || address.village || address.hamlet || '';
-    const county = address.county || address.state_district || '';
-    const state = address.state || '';
-    const country = address.country || '';
-    const mainPart = city || county;
-    const parts = [mainPart, state, country].filter(part => part !== '');
-    return parts.join(', ');
   }
 }

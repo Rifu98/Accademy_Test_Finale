@@ -17,6 +17,9 @@ public class MeteoDTO {
     @NotNull(message = "La temperatura massima non può essere vuota")
     private double tempmax;
 
+    @NotNull(message = "Il codice meteo non può essere vuoto")
+    private int weathercode;
+
     @NotNull(message = "La temperatura minima non può essere vuota")
     private double tempmin;
 
@@ -69,6 +72,14 @@ public class MeteoDTO {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public int getWeathercode() {
+		return weathercode;
+	}
+
+	public void setWeathercode(int weathercode) {
+		this.weathercode = weathercode;
 	}
     
 }

@@ -29,6 +29,7 @@ public class MeteoServiceImpl implements MeteoService {
         meteo.setData(meteoDTO.getData());
         meteo.setTempmax(meteoDTO.getTempmax());
         meteo.setTempmin(meteoDTO.getTempmin());
+        meteo.setWeathercode(meteoDTO.getWeathercode());
         meteo.setUser(userService.findById(meteoDTO.getUserId()));
         meteoDao.save(meteo);
     }

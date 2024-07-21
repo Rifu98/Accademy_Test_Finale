@@ -1,7 +1,7 @@
 <div class="main container text-center">
   <h2>Meteo</h2>
-  <form (ngSubmit)="onSearch()" >
-    <mat-form-field class="full-width" (click)="openLocationDialog()" >
+  <form (ngSubmit)="onSearch()">
+    <mat-form-field class="full-width" (click)="openLocationDialog()">
       <mat-label>Località</mat-label>
       <input matInput [value]="location" readonly>
     </mat-form-field>
@@ -13,14 +13,24 @@
     </mat-form-field>
     <button mat-flat-button color="primary" type="submit" [disabled]="!selectedLocation">Cerca</button>
   </form>
-  <div class="results" *ngIf="weather">
-    <h3>Previsioni Meteo per {{ selectedLocation?.shortenedDisplayName }} per {{ getFormattedDate(selectedDate) }}</h3>
-    <p>Temperatura Massima: {{ weather.temperature_2m_max[0] }}°C</p>
-    <p>Temperatura Minima: {{ weather.temperature_2m_min[0] }}°C</p>
-    <button mat-fab extended [disabled]="!isLogged" (click)="save()">
-      <mat-icon>favorite</mat-icon>
-      Salva
-    </button>
-    <mat-error *ngIf="!isLogged">Devi essere loggato per salvare i risultati</mat-error>
-  </div>
 </div>
+
+<div class="d-flex flex-row justify-content-center align-items-center">
+  <mat-card *ngIf="weather" class="col-sm-6 text-center">
+    <mat-card-header class="d-flex fòex-row justify-content-center align-items-center">
+      <mat-card-title><h3>Meteo del {{ getFormattedDate(selectedDate) }} per {{selectedLocation?.shortenedDisplayName}}</h3></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class=" text-center">
+        {{utilsService.getWeatherText(weather.weather_code[0])}}
+        <img [src]="utilsService.getWeatherIcon(weather.weather_code[0])" alt="Weather Icon">
+        <p>Temperatura massima: {{ weather.temperature_2m_max[0] }}°C Temperatura minima: {{ weather.temperature_2m_min[0] }}°C</p>
+      </div>
+      <button mat-fab extended [disabled]="!isLogged" (click)="save()">
+        <mat-icon>favorite</mat-icon>
+        Salva
+      </button>
+      <mat-error *ngIf="!isLogged">Devi essere loggato per salvare i risultati</mat-error>
+    </mat-card-content>
+  </mat-card>
+  </div>

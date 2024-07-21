@@ -30,19 +30,6 @@
   margin: 1vmax;
 }
 
-.course-card {
-  padding: 1vmax;
-  text-align: center;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-  .course-card:hover {
-    transform: scale(1.05);
-  }
-
-mat-card-title {
-  font-weight: bold
+mat-card {
+  margin: 1vmax;
 }

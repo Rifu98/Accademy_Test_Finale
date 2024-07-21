@@ -8,13 +8,22 @@
       <button mat-flat-button color="warn" (click)=" logout()">Logout</button>
     </div>
   </div>
-  <div class="results" *ngFor="let ricerca of utente.ricercheMeteo">
-    <h3>Previsioni Meteo per {{ ricerca.citta }} il {{ ricerca.data }}</h3>
-    <p>Temperatura Massima: {{ ricerca.tempmax }}°C</p>
-    <p>Temperatura Minima: {{ ricerca.tempmin }}°C</p>
-    <button mat-fab extended >
-      <mat-icon>favorite</mat-icon>
-      Elimina
-    </button>
+  <div class="row justify-content-center">
+    <mat-card *ngFor="let ricerca of utente.ricercheMeteo" class="col-12 col-md-5 text-center">
+      <mat-card-header class="d-flex fòex-row justify-content-center align-items-center">
+        <mat-card-title><h3>Meteo del {{ ricerca.data }} per {{ricerca.citta}}</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class=" text-center">
+          {{utilsService.getWeatherText( ricerca.weathercode)}}
+          <img [src]="utilsService.getWeatherIcon(ricerca.weathercode)" alt="Weather Icon">
+          <p>Temperatura massima: {{ ricerca.tempmax }}°C Temperatura minima: {{ ricerca.tempmin }}°C</p>
+        </div>
+        <button mat-fab extended>
+          <mat-icon>favorite</mat-icon>
+          Elimina
+        </button>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

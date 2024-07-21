@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NgFor } from '@angular/common';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +23,12 @@ import { NgFor } from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private profiloService: ProfileService, private storageService: StorageService, private router: Router) { }
+  constructor(
+    private profiloService: ProfileService,
+    private storageService: StorageService,
+    private router: Router,
+    public utilsService: UtilsService,
+  ) { }
 
   utente: User = new User(0, "", "", "", "");
 

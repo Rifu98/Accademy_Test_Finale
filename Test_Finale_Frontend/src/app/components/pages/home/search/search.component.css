@@ -1,7 +1,7 @@
 mat-card {
-    cursor:pointer;
-    margin:1vmax;
-    display:inline !important;
+  cursor: pointer;
+  margin: 1vmax;
+  text-align: center;
 }
 .main {
   background-color: rgba(255,255,255,0.9);
@@ -14,6 +14,6 @@ form {
     justify-content:space-around;
     flex-wrap:wrap
 }
-.icon img {
-    height: 1vmax;
+img {
+  height: 1vmax;
 }

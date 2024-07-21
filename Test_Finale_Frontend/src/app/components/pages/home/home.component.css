@@ -5,3 +5,10 @@
     background-size:cover;
     min-height:80vh;
 }
+mat-card {
+  margin: 1vmax;
+}
+
+img {
+  width: 2vmax;
+}

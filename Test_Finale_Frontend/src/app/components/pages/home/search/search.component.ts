@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NominatimService } from '../../../../services/external/nominatim.service';
 import { OpenMeteoService } from '../../../../services/external/open-meteo.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +17,8 @@ import { User } from '../../../../dto/User';
 import { MeteoService } from '../../../../services/meteo.service';
 import { LocationDialogComponent } from '../location-dialog/location-dialog.component';
 import { NgIf } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
   selector: 'app-search',
@@ -31,7 +32,8 @@ import { NgIf } from '@angular/common';
     MatNativeDateModule,
     MatChipsModule,
     MatIconModule,
-    NgIf
+    NgIf,
+    MatCardModule
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
@@ -42,16 +44,16 @@ export class SearchComponent implements OnInit {
   selectedDate: Date = new Date();
   weather: any;
   isLogged: boolean = false;
-  meteo: Meteo = new Meteo('', new Date(), 0, 0, 0);
+  meteo: Meteo = new Meteo('', new Date(), 0, 0, 0, 0);
 
   constructor(
-    private nominatimService: NominatimService,
     private openMeteoService: OpenMeteoService,
     private authService: AuthService,
     private storageService: StorageService,
     private profiloService: ProfileService,
     private meteoService: MeteoService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public utilsService: UtilsService,
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +85,7 @@ export class SearchComponent implements OnInit {
 
   save() {
     this.profiloService.getProfilo(this.storageService.getProperty('user_email'))?.subscribe((res: User) => {
-      this.meteo = new Meteo(this.selectedLocation.shortenedDisplayName, this.selectedDate, this.weather.temperature_2m_max[0], this.weather.temperature_2m_min[0], res.id);
+      this.meteo = new Meteo(this.selectedLocation.shortenedDisplayName, this.selectedDate, this.weather.temperature_2m_max[0], this.weather.temperature_2m_min[0], this.weather.weather_code[0], res.id);
       this.meteoService.save(this.meteo)!.subscribe();
     });
   }
